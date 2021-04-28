@@ -2,15 +2,16 @@ package com.udb.dsm.solidapp;
 
 import androidx.annotation.NonNull;
 
-public class BebidaProducto extends Producto {
-
-    public BebidaProducto(String nombre, double precio) {
+public class LimpiezaProducto extends Producto {
+    public LimpiezaProducto(String nombre, double precio) {
         super(nombre, precio);
     }
 
     @Override
     public double obtenerSubtotalProducto() {
-        return 0;
+        this.subtotal = this.precio * this.cantidad;
+
+        return this.subtotal;
     }
 
     @Override
