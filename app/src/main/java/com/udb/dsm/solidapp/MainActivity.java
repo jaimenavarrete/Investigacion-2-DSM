@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void agregarProductoCarrito() {
-        if(!editTextCantidad.getText().equals("")) {
+        if(!editTextCantidad.getText().toString().equals("")) {
             Producto producto = (Producto)spinner.getSelectedItem();
             producto.setCantidad(Integer.parseInt(editTextCantidad.getText().toString()));
 
