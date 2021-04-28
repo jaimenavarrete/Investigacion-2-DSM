@@ -19,7 +19,7 @@
         android:textAlignment="center"
         android:layout_gravity="center_horizontal"
 
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="10dp"
         />
 
     <TextView
@@ -58,11 +58,32 @@
         android:text="Agregar producto"
         android:layout_marginBottom="10dp" />
 
+    <TextView
+        android:id="@+id/textViewSubtotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="SUBTOTAL:"
+        android:textColor="#212121"
+        android:textSize="18sp"
+
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="TOTAL:"
+        android:textColor="#212121"
+        android:textSize="18sp"
+
+        android:textStyle="bold" />
+
     <ListView
         android:id="@+id/listViewProductosCarrito"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        />
+        android:layout_height="434dp"
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>

@@ -1,11 +1,26 @@
 package com.udb.dsm.solidapp;
 
-import androidx.annotation.NonNull;
+/*
+*
+* En el caso de esta aplicación de carrito de compras, tenemos el problema que cada tipo de producto
+* puede tener atributos distintos para obtener su costo subtotal y total (por ejemplo: impuestos,
+* costos añadidos, etc.), por lo que para poder cumplir con el principio abierto/cerrado, podemos
+* separar la lógica de una sola clase Producto que trabaje la información de todos los tipos de
+* producto a múltiples clases hijas de tipos de producto, que hereden variables y métodos de una
+* clase padre Producto para poder calcular el subtotal y total de ese tipo específico de producto,
+* de manera que en caso de que se aumenten los tipos de producto, no tengamos que modificar el
+* código de la clase producto, sino que solamente tengamos que crear y trabajar directamente en las
+* clases de los nuevos productos
+*
+* */
 
 public abstract class Producto {
     public String nombre;
     public int cantidad;
     public double precio;
+
+    public double subtotal;
+    public double total;
 
     public Producto() {}
 
@@ -37,6 +52,31 @@ public abstract class Producto {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    /*
+     *
+     * La clase padre asignará dos métodos abstractos que serán reasignadas por cada clase hija de
+     * producto dependiendo de los atributos que estas posean para calcular ambos valores
+     * (subtotal y total), de esta manera evitamos tener que modificar directamente el código de la
+     * clase Product cada vez que se agreguen nuevos tipos de productos a la aplicación.
+     *
+     * */
 
     public abstract double obtenerSubtotalProducto();
     public abstract double obtenerTotalProducto();
