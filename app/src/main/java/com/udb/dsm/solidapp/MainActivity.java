@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,14 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textViewSubtotal, textViewTotal;
     EditText editTextCantidad;
-    Button btnAgregar;
+    Button btnVerCostos, btnAgregar;
 
     ListView listViewProductosCarrito;
     ArrayList<Producto> listaProductosCarrito;
-    ArrayAdapter<Producto> arrayAdapterProductosCarrito;
-
-    double subtotalCarrito = 0.0,
-           totalCarrito = 0.0;
+    ArrayList<String> textoListaProductosCarrito;
+    ArrayAdapter<String> arrayAdapterProductosCarrito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,59 +58,29 @@ public class MainActivity extends AppCompatActivity {
         textViewTotal = findViewById(R.id.textViewTotal);
 
         btnAgregar = findViewById(R.id.btnAgregar);
+        btnVerCostos = findViewById(R.id.btnVerCostos);
 
         listViewProductosCarrito = findViewById(R.id.listViewProductosCarrito);
         listaProductosCarrito = new ArrayList<>();
-        arrayAdapterProductosCarrito = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listaProductosCarrito);
+        textoListaProductosCarrito = new ArrayList<>();
+        arrayAdapterProductosCarrito = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, textoListaProductosCarrito);
     }
 
     protected void inicializarElementos() {
-        mostrarCostosCarrito();
+        //calcularCostosCarrito();
 
         btnAgregar.setOnClickListener(v -> {
             agregarProductoCarrito();
+            calcularCostosCarrito();
+        });
+
+        btnVerCostos.setOnClickListener(v -> {
+            Intent intent = new Intent(this, VerCostosActivity.class);
+            startActivity(intent);
         });
 
         listViewProductosCarrito.setAdapter(arrayAdapterProductosCarrito);
         listViewProductosCarrito.setOnItemLongClickListener(eventoEliminarProducto());
-    }
-
-    /*
-     *
-     * En este método podemos observar fácilmente las ventajas del principio abierto/cerrado, ya que
-     * a pesar de tener tres tipos de productos que poseen atributos distintos para calcular el
-     * subtotal y el total, no necesitamos hacer modificaciones de código para cada uno de ellos,
-     * sino que solamente debemos hacer uso de los métodos abstractos de la clase padre. De manera
-     * que si más adelante tenemos que agregar otros tipos de productos, no necesitaremos modificar
-     * ni siquiera tocar este código.
-     *
-     * */
-
-    protected void calcularCostosCarrito() {
-        subtotalCarrito = 0;
-        totalCarrito = 0;
-
-        for(Producto producto : listaProductosCarrito) {
-            subtotalCarrito += producto.obtenerSubtotalProducto();
-            totalCarrito += producto.obtenerTotalProducto();
-        }
-
-        mostrarCostosCarrito();
-    }
-
-    protected void mostrarCostosCarrito() {
-        textViewSubtotal.setText("SUBTOTAL: $" + subtotalCarrito);
-        textViewTotal.setText("TOTAL: $" + totalCarrito);
-    }
-
-    protected void llenarSpinner() {
-        ArrayList<Producto> productos = new ArrayList<>();
-        productos.add(new ComidaProducto("Pizza", 1.5));
-        productos.add(new BebidaAlcoholicaProducto("Leche", 2.5));
-
-        ArrayAdapter<Producto> adaptador = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, productos);
-
-        spinner.setAdapter(adaptador);
     }
 
     protected AdapterView.OnItemLongClickListener eventoEliminarProducto() {
@@ -125,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         eliminarProductoCarrito(position);
+                        calcularCostosCarrito();
                     }
                 });
                 builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -138,27 +108,78 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    protected void agregarProductoCarrito() {
-        if(!editTextCantidad.getText().toString().equals("")) {
-            Producto producto = (Producto)spinner.getSelectedItem();
-            producto.setCantidad(Integer.parseInt(editTextCantidad.getText().toString()));
+    /*
+     *
+     * En este método podemos observar fácilmente las ventajas del principio abierto/cerrado, ya que
+     * a pesar de tener tres tipos de productos que poseen atributos distintos para calcular el
+     * subtotal y el total, no necesitamos hacer modificaciones de código para cada uno de ellos,
+     * sino que solamente debemos hacer uso de los métodos abstractos de la clase padre. De manera
+     * que si más adelante tenemos que agregar otros tipos de productos, no necesitaremos modificar
+     * este código.
+     *
+     * */
 
-            listaProductosCarrito.add(producto);
+    protected void calcularCostosCarrito() {
+        double subtotalCarrito = 0;
+        double totalCarrito = 0;
+
+        for(Producto producto : listaProductosCarrito) {
+            subtotalCarrito += producto.obtenerSubtotalProducto();
+            totalCarrito += producto.obtenerTotalProducto();
+        }
+
+        mostrarCostosCarrito(subtotalCarrito, totalCarrito);
+    }
+
+    protected void mostrarCostosCarrito(double subtotalCarrito, double totalCarrito) {
+        textViewSubtotal.setText("SUBTOTAL: $" + subtotalCarrito);
+        textViewTotal.setText("TOTAL: $" + totalCarrito);
+    }
+
+    protected void llenarSpinner() {
+        ArrayList<Producto> productos = new ArrayList<>();
+        productos.add(new ComidaProducto("Comida 1", 12.5));
+        productos.add(new ComidaProducto("Comida 2", 25.00));
+        productos.add(new ComidaProducto("Comida 3", 45.70));
+        productos.add(new BebidaAlcoholicaProducto("Bebida alcohólica 1", 14.50));
+        productos.add(new BebidaAlcoholicaProducto("Bebida alcohólica 2", 75.10));
+        productos.add(new BebidaAlcoholicaProducto("Bebida alcohólica 3", 60.00));
+        productos.add(new ArmaProducto("Arma 1", 125.00));
+        productos.add(new ArmaProducto("Arma 2", 255.00));
+        productos.add(new ArmaProducto("Arma 3", 450.00));
+
+        ArrayAdapter<Producto> adaptador = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, productos);
+
+        spinner.setAdapter(adaptador);
+    }
+
+    protected void agregarProductoCarrito() {
+        if(!editTextCantidad.getText().toString().equals("") && Integer.parseInt(editTextCantidad.getText().toString()) > 0) {
+            Producto nuevoProducto = (Producto)spinner.getSelectedItem();
+            nuevoProducto.setCantidad(Integer.parseInt(editTextCantidad.getText().toString()));
+
+            listaProductosCarrito.add(nuevoProducto);
+            textoListaProductosCarrito.add(
+                "- Producto: " + nuevoProducto.nombre + " " +
+                "- Cantidad: " + nuevoProducto.cantidad + "\n" +
+                "- Precio: $" + nuevoProducto.precio + " " +
+                "- Subtotal: $" + nuevoProducto.obtenerSubtotalProducto() + "\n" +
+                "- Total: $" + nuevoProducto.obtenerTotalProducto()
+            );
             arrayAdapterProductosCarrito.notifyDataSetChanged();
-            calcularCostosCarrito();
 
             Toast.makeText(this, "El producto ha sido agregado correctamente al carrito", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "Debe colocar la cantidad a agregar" , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Debe colocar la cantidad a agregar y debe ser mayor a 0" , Toast.LENGTH_LONG).show();
         }
     }
 
     protected void eliminarProductoCarrito(int position) {
         try {
             listaProductosCarrito.remove(position);
+            textoListaProductosCarrito.remove(position);
             arrayAdapterProductosCarrito.notifyDataSetChanged();
-            calcularCostosCarrito();
 
             Toast.makeText(MainActivity.this, "El producto ha sido eliminado correctamente del carrito", Toast.LENGTH_LONG).show();
         }

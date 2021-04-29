@@ -5,14 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
+    tools:context=".VerCostosActivity"
 
     android:paddingHorizontal="10dp">
+
+    <Button
+        android:id="@+id/btnRegresar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Regresar"
+        android:textColor="#6200EE"
+        app:backgroundTint="#FFFFFF"
+        app:strokeColor="#6200EE"
+        app:strokeWidth="1dp"
+        android:layout_marginVertical="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CARRITO DE COMPRAS"
+        android:text="COSTOS ASOCIADOS A TIPOS DE PRODUCTO"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#212121"
@@ -22,21 +34,10 @@
         android:layout_marginVertical="10dp"
         />
 
-    <Button
-        android:id="@+id/btnVerCostos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Ver costos asociados a productos"
-        android:textColor="#6200EE"
-        app:backgroundTint="#FFFFFF"
-        app:strokeColor="#6200EE"
-        app:strokeWidth="1dp" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Seleccione un producto:"
+        android:text="Productos de tipo comida:"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#212121"
@@ -44,57 +45,57 @@
         android:layout_marginBottom="10dp"
         />
 
-    <Spinner
-        android:id="@+id/spinnerProductos"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="- Impuesto: 13% \n- Propina: $20"
+        android:textSize="18sp"
+        android:textColor="#212121"
+
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Productos de tipo bebida alcohólica:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
 
         android:layout_marginBottom="10dp"
         />
 
-    <EditText
-        android:id="@+id/editTextCantidad"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Cantidad:"
-        android:inputType="number"
+        android:text="- Impuesto: 13%"
+        android:textSize="18sp"
+        android:textColor="#212121"
 
-        android:layout_marginBottom="10dp"/>
-
-    <Button
-        android:id="@+id/btnAgregar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Agregar producto"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="30dp"
+        />
 
     <TextView
-        android:id="@+id/textViewSubtotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="SUBTOTAL:"
-        android:textColor="#212121"
+        android:text="Productos de tipo arma:"
         android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
 
-        android:textStyle="bold" />
+        android:layout_marginBottom="10dp"
+        />
 
     <TextView
-        android:id="@+id/textViewTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="TOTAL:"
-        android:textColor="#212121"
+        android:text="- Impuesto: 25% \n- Costo de traspaso de armas: $55 \n- Costo de matrícula de arma: $63 \n- Costo de prueba balistica: $3"
         android:textSize="18sp"
+        android:textColor="#212121"
 
-        android:textStyle="bold" />
+        android:layout_marginBottom="10dp"
+        />
 
-    <ListView
-        android:id="@+id/listViewProductosCarrito"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
 
 </LinearLayout>

@@ -19,14 +19,12 @@ public abstract class Producto {
     public int cantidad;
     public double precio;
 
-    public double subtotal;
-    public double total;
-
     public Producto() {}
 
     public Producto(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
+        this.cantidad = 0;
     }
 
     public String getNombre() {
@@ -53,31 +51,18 @@ public abstract class Producto {
         this.precio = precio;
     }
 
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
+    public double obtenerSubtotalProducto() {
+        return (this.precio * this.cantidad);
+    };
 
     /*
      *
-     * La clase padre asignará dos métodos abstractos que serán reasignadas por cada clase hija de
-     * producto dependiendo de los atributos que estas posean para calcular ambos valores
-     * (subtotal y total), de esta manera evitamos tener que modificar directamente el código de la
-     * clase Product cada vez que se agreguen nuevos tipos de productos a la aplicación.
+     * La clase padre asignará el método abstracto que será redefinido por cada clase hija de
+     * producto dependiendo de los atributos y procedimientos que estas posean para calcular dicho
+     * valor (total), de esta manera evitamos tener que modificar directamente el código de la clase
+     * Product cada vez que se agreguen nuevos tipos de productos a la aplicación.
      *
      * */
 
-    public abstract double obtenerSubtotalProducto();
     public abstract double obtenerTotalProducto();
 }

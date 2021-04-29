@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
  * ficticio se toma en cuenta que la compra de comida tiene un costo añadido de propina de $20 (la
  * cual no la poseen los demás productos) y tiene un impuesto del 13%
  *
+ * A continuación extendemos de la clase padre Producto, para que de esa forma tengamos acceso al
+ * método abstracto obtenerTotalProducto, para modificarlo a este tipo de producto
+ *
  * */
 
 public class ComidaProducto extends Producto {
@@ -18,41 +21,27 @@ public class ComidaProducto extends Producto {
 
     /*
      *
-     * Aquí vemos cómo la clase hija está redefiniendo los métodos obtenerSubtotalProducto y
-     * obtenerTotalProducto para los productos de tipo comida, de modo que sea la misma clase hija
-     * la encargada de definir la forma en la que se calcularán esos valores, para que no tengamos
-     * que modificar el código de otras clases (por ejemplo la clase padre), cumpliendo así el
-     * principio abierto/cerrado
+     * Aquí vemos cómo la clase hija está redefiniendo el método obtenerTotalProducto para los
+     * productos de tipo comida, de modo que sea la misma clase hija la encargada de definir la
+     * forma en la que se calculará ese valor, para que no tengamos que modificar el código de otras
+     * clases (por ejemplo la clase padre), cumpliendo así el principio abierto/cerrado
      *
      * */
 
     @Override
-    public double obtenerSubtotalProducto() {
-        double costoPropina = 20;
-
-        this.subtotal = (this.precio * this.cantidad) + costoPropina;
-
-        return Math.round(this.subtotal * 100.0) / 100.0;
-    }
-
-    @Override
     public double obtenerTotalProducto() {
+        double total;
+
+        double costoPropina = 20;
         double porcentajeImpuesto = 0.13;
 
-        this.total = this.obtenerSubtotalProducto() * (1 + porcentajeImpuesto);
+        total = this.obtenerSubtotalProducto() * (1 + porcentajeImpuesto);
+        total += costoPropina;
 
-        return Math.round(this.total * 100.0) / 100.0;
+        return Math.round(total * 100.0) / 100.0;
     }
 
     @NonNull
     @Override
-    public String toString() {
-        String texto = "- Producto: " + this.nombre + "\t\t\t - " +
-                       "Cantidad: " + this.cantidad + "\n - " +
-                       "Precio: $" + this.precio + "\t\t\t - " +
-                       "Subtotal: $" + this.obtenerSubtotalProducto() + "\n - " +
-                       "Total: $" + this.obtenerTotalProducto();
-
-        return texto;
-    }
+    public String toString() { return this.nombre + " - $" + String.valueOf(this.precio); }
 }
